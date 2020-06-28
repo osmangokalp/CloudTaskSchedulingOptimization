@@ -13,6 +13,7 @@
   <modules>
     <module>cloudsim</module>
     <module>cloudsim-examples</module>
+    <module>optimization</module>
   </modules>
 
   <build>
