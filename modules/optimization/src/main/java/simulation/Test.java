@@ -20,7 +20,7 @@ public class Test {
     private static int seed = 0;
 
     private static int cloudletSchedulerType = 1; //0: space shared, 1: time shared
-    private static int numOfCloudlets = 400;
+    private static int numOfCloudlets = 100;
     private static int numOfVMs = 10;
     private static int brokerType = 0; //0: Mapping broker, 1: SJF Broker, 2: FCFS Broker (Standard DatacenterBroker)
     private static boolean silent = true;
