@@ -5,14 +5,19 @@
  */
 package simulation;
 
+import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.util.WorkloadFileReader;
 import simulation.Simulation;
+
+import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Random;
+
 import org.cloudbus.cloudsim.Log;
 import scheduler.ABC_Scheduler;
 import scheduler.PSO_Scheduler;
 
 /**
- *
  * @author osman
  */
 public class Test {
@@ -28,6 +33,17 @@ public class Test {
     static int MAX_FES = numOfCloudlets * 1000;
 
     public static void main(String[] args) {
+
+        List<Cloudlet> cloudletList;
+        //Read Cloudlets from workload file in the swf format
+        WorkloadFileReader workloadFileReader = null;
+        try {
+            workloadFileReader = new WorkloadFileReader("real_workloads\\HPC2N-2002-1.1-cln.swf", 1);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        //generate cloudlets from workload file
+        cloudletList = workloadFileReader.generateWorkload();
 
         Random rng = new Random(seed);
         int[] mapping = new int[numOfCloudlets];
