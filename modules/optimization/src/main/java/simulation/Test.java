@@ -7,6 +7,7 @@ package simulation;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.util.WorkloadFileReader;
+import scheduler.MaxMinScheduler;
 import scheduler.MinMinScheduler;
 import simulation.Simulation;
 
@@ -102,12 +103,21 @@ public class Test {
 
         brokerType = 0;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
-        MinMinScheduler mms = new MinMinScheduler(sim);
-        mapping = mms.schedule(0);
+        MinMinScheduler minmins = new MinMinScheduler(sim);
+        mapping = minmins.schedule(0);
         predictedMakespan = sim.predictFitnessValue(mapping);
         System.out.println("MinMin predicted makespan: " + predictedMakespan);
         actualMakespan = sim.runSimulation(mapping);
         System.out.println("MinMin actual makespan: " + actualMakespan);
+
+        brokerType = 0;
+        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        MaxMinScheduler maxmins = new MaxMinScheduler(sim);
+        mapping = maxmins.schedule(0);
+        predictedMakespan = sim.predictFitnessValue(mapping);
+        System.out.println("MaxMin predicted makespan: " + predictedMakespan);
+        actualMakespan = sim.runSimulation(mapping);
+        System.out.println("MaxMin actual makespan: " + actualMakespan);
 
     }
 }
