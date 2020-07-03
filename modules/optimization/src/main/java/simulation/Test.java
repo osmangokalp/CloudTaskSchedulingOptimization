@@ -25,7 +25,7 @@ public class Test {
     private static int seed = 0;
 
     private static int cloudletSchedulerType = 1; //0: space shared, 1: time shared
-    private static int numOfCloudlets = 100;
+    private static int numOfCloudlets = 400;
     private static int numOfVMs = 10;
     private static int brokerType = 0; //0: Mapping broker, 1: SJF Broker, 2: FCFS Broker (Standard DatacenterBroker)
     private static boolean silent = true;
@@ -34,16 +34,7 @@ public class Test {
 
     public static void main(String[] args) {
 
-        List<Cloudlet> cloudletList;
-        //Read Cloudlets from workload file in the swf format
-        WorkloadFileReader workloadFileReader = null;
-        try {
-            workloadFileReader = new WorkloadFileReader("real_workloads\\HPC2N-2002-1.1-cln.swf", 1);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        //generate cloudlets from workload file
-        cloudletList = workloadFileReader.generateWorkload();
+        //List<Cloudlet> cloudletList = Util.readSWFWorkload("HPC2N-2002-1.1-cln");
 
         Random rng = new Random(seed);
         int[] mapping = new int[numOfCloudlets];
@@ -101,12 +92,16 @@ public class Test {
         System.out.println("");
 
         brokerType = 1;
-        Simulation sim2 = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
-        System.out.println("SJF makespan: " + sim2.runSimulation(null));
+        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        System.out.println("SJF makespan: " + sim.runSimulation(null));
 
         brokerType = 2;
-        Simulation sim3 = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
-        System.out.println("FCFS makespan: " + sim3.runSimulation(null));
+        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        System.out.println("FCFS makespan: " + sim.runSimulation(null));
+
+        brokerType = 3;
+        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        System.out.println("MinMin makespan: " + sim.runSimulation(null));
 
     }
 }

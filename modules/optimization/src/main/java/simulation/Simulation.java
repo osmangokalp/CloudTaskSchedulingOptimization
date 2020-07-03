@@ -6,6 +6,7 @@
 package simulation;
 
 import broker.MappingBroker;
+import broker.MinMinBroker;
 import broker.SJF_DatacenterBroker;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -230,6 +231,9 @@ public class Simulation {
                     break;
                 case 2:
                     broker = new DatacenterBroker("Broker");
+                    break;
+                case 3:
+                    broker = new MinMinBroker("Broker", this);
                     break;
             }
 
