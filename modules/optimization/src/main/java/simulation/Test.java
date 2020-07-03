@@ -7,6 +7,7 @@ package simulation;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.util.WorkloadFileReader;
+import scheduler.MinMinScheduler;
 import simulation.Simulation;
 
 import java.io.FileNotFoundException;
@@ -99,9 +100,14 @@ public class Test {
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
         System.out.println("FCFS makespan: " + sim.runSimulation(null));
 
-        brokerType = 3;
+        brokerType = 0;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
-        System.out.println("MinMin makespan: " + sim.runSimulation(null));
+        MinMinScheduler mms = new MinMinScheduler(sim);
+        mapping = mms.schedule(0);
+        predictedMakespan = sim.predictFitnessValue(mapping);
+        System.out.println("MinMin predicted makespan: " + predictedMakespan);
+        actualMakespan = sim.runSimulation(mapping);
+        System.out.println("MinMin actual makespan: " + actualMakespan);
 
     }
 }
