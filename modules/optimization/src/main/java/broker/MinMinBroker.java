@@ -6,17 +6,13 @@ import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
-import org.cloudbus.cloudsim.lists.VmList;
 import simulation.Simulation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MinMinBroker extends DatacenterBroker {
-    private Simulation sim;
-    private final int[] CLOUDLET_LENGTHS;
     private final double[][] ETC_MATRIX;
-    private final int numOfCloudlets;
     private final int numOfVMs;
 
     private ArrayList<Integer> cloudletsToBeAssigned = new ArrayList<>();
@@ -24,17 +20,15 @@ public class MinMinBroker extends DatacenterBroker {
 
     public MinMinBroker(String name, Simulation sim) throws Exception {
         super(name);
-        this.sim = sim;
 
-        CLOUDLET_LENGTHS = sim.getCLOUDLET_LENGTHS();
+        int[] CLOUDLET_LENGTHS = sim.getCLOUDLET_LENGTHS();
         ETC_MATRIX = sim.getETC_MATRIX();
-        numOfCloudlets = sim.getNumOfCloudlets();
         numOfVMs = sim.getNumOfVMs();
 
         //initialize readyTime array
         readyTime = new double[numOfVMs];
-        for (double d : readyTime) {
-            d = 0;
+        for (int i = 0; i < numOfVMs; i++) {
+            readyTime[i] = 0;
         }
 
         for (int i = 0; i < CLOUDLET_LENGTHS.length; i++) {
