@@ -61,6 +61,7 @@ public class Test {
         System.out.println("");
 
         //ABC-----------------------------------------------
+        rng = new Random(seed);
         ABC_Scheduler abcScheduler = new ABC_Scheduler(sim);
         mapping = abcScheduler.schedule(MAX_FES);
 
@@ -82,6 +83,7 @@ public class Test {
         System.out.println("");
 
         //PSO-----------------------------------------------
+        rng = new Random(seed);
         PSO_Scheduler psoScheduler = new PSO_Scheduler(sim);
         mapping = psoScheduler.schedule(MAX_FES);
 
@@ -102,16 +104,22 @@ public class Test {
 
         System.out.println("");
 
+        //SJF
+        rng = new Random(seed);
         brokerType = 1;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
         System.out.println("SJF fitness: " + sim.runSimulation(null));
 
+        //FCFS
+        rng = new Random(seed);
         brokerType = 2;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
         System.out.println("FCFS fitness: " + sim.runSimulation(null));
 
         System.out.println();
 
+        //Min Min
+        rng = new Random(seed);
         brokerType = 0;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
         MinMinScheduler minmins = new MinMinScheduler(sim);
@@ -126,6 +134,8 @@ public class Test {
 
         System.out.println();
 
+        //Max Min
+        rng = new Random(seed);
         brokerType = 0;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
         MaxMinScheduler maxmins = new MaxMinScheduler(sim);
