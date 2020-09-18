@@ -50,10 +50,13 @@ public class Test {
         Simulation sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
 
         double predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("Random mapping predicted makespan: " + predictedMakespan);
+        System.out.println("Random mapping predicted fitness: " + predictedMakespan);
 
         double actualMakespan = sim.runSimulation(mapping);
-        System.out.println("Random mapping actual makespan: " + actualMakespan);
+        System.out.println("Random mapping actual fitness: " + actualMakespan);
+
+        System.out.println("Random mapping predicted makespan: " + sim.calculatePredictedMakespan(mapping));
+        System.out.println("Random mapping predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
 
         System.out.println("");
 
@@ -68,10 +71,13 @@ public class Test {
         System.out.println();
 
         predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("ABC predicted makespan: " + predictedMakespan);
+        System.out.println("ABC predicted fitness: " + predictedMakespan);
 
         actualMakespan = sim.runSimulation(mapping);
-        System.out.println("ABC actual makespan: " + actualMakespan);
+        System.out.println("ABC actual fitness: " + actualMakespan);
+
+        System.out.println("ABC predicted makespan: " + sim.calculatePredictedMakespan(mapping));
+        System.out.println("ABC predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
 
         System.out.println("");
 
@@ -86,38 +92,51 @@ public class Test {
         System.out.println();
 
         predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("PSO predicted makespan: " + predictedMakespan);
+        System.out.println("PSO predicted fitness: " + predictedMakespan);
 
         actualMakespan = sim.runSimulation(mapping);
-        System.out.println("PSO actual makespan: " + actualMakespan);
+        System.out.println("PSO actual fitness: " + actualMakespan);
+
+        System.out.println("PSO predicted makespan: " + sim.calculatePredictedMakespan(mapping));
+        System.out.println("PSO predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
 
         System.out.println("");
 
         brokerType = 1;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
-        System.out.println("SJF makespan: " + sim.runSimulation(null));
+        System.out.println("SJF fitness: " + sim.runSimulation(null));
 
         brokerType = 2;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
-        System.out.println("FCFS makespan: " + sim.runSimulation(null));
+        System.out.println("FCFS fitness: " + sim.runSimulation(null));
+
+        System.out.println();
 
         brokerType = 0;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
         MinMinScheduler minmins = new MinMinScheduler(sim);
         mapping = minmins.schedule(0);
         predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("MinMin predicted makespan: " + predictedMakespan);
+        System.out.println("MinMin predicted fitness: " + predictedMakespan);
         actualMakespan = sim.runSimulation(mapping);
-        System.out.println("MinMin actual makespan: " + actualMakespan);
+        System.out.println("MinMin actual fitness: " + actualMakespan);
+
+        System.out.println("MinMin predicted makespan: " + sim.calculatePredictedMakespan(mapping));
+        System.out.println("MinMin predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
+
+        System.out.println();
 
         brokerType = 0;
         sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
         MaxMinScheduler maxmins = new MaxMinScheduler(sim);
         mapping = maxmins.schedule(0);
         predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("MaxMin predicted makespan: " + predictedMakespan);
+        System.out.println("MaxMin predicted fitness: " + predictedMakespan);
         actualMakespan = sim.runSimulation(mapping);
-        System.out.println("MaxMin actual makespan: " + actualMakespan);
+        System.out.println("MaxMin actual fitness: " + actualMakespan);
+
+        System.out.println("MaxMin predicted makespan: " + sim.calculatePredictedMakespan(mapping));
+        System.out.println("MaxMin predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
 
     }
 }

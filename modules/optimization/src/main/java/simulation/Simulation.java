@@ -46,7 +46,7 @@ public class Simulation {
     private int numOfVMs;
     private Random rng;
     private boolean silent;
-    private int fitnessType = 0; // 0: makespan
+    private int fitnessType = 0; // 0:makespan, 1: resource utilization
 
     private final double[] VM_MIPS_POWERS;
     private final int[] CLOUDLET_LENGTHS;
@@ -294,6 +294,10 @@ public class Simulation {
                 case 0:
                     fitness = calculateActualMakespan(newList);
                     break;
+                case 1:
+                    fitness = calculateActualResourceUtilization(newList);
+                    fitness = 1.0 / fitness; //for maximization
+                    break;
                 default:
                     fitness = -1; //error value
             }
@@ -338,7 +342,7 @@ public class Simulation {
 
     }
 
-    private double calculateActualMakespan(List<Cloudlet> list) {
+    public double calculateActualMakespan(List<Cloudlet> list) {
         double makespan = 0;
         double minStartTime = Double.MAX_VALUE;
         double maxFinishTime = 0;
@@ -356,6 +360,35 @@ public class Simulation {
 
         makespan = maxFinishTime - minStartTime;
         return makespan;
+    }
+
+    public double calculateActualResourceUtilization(List<Cloudlet> list) {
+        double[] ST = new double[numOfVMs];
+        double[] CT = new double[numOfVMs];
+        for (int i = 0; i < numOfVMs; i++) {
+            ST[i] = Double.POSITIVE_INFINITY;
+            CT[i] = Double.NEGATIVE_INFINITY;
+        }
+
+        for (Cloudlet cloudlet : cloudletList) {
+            int vmID = cloudlet.getVmId();
+            if (ST[vmID] > cloudlet.getExecStartTime()) {
+                ST[vmID] = cloudlet.getExecStartTime();
+            }
+
+            if(CT[vmID] < cloudlet.getFinishTime()) {
+                CT[vmID] = cloudlet.getFinishTime();
+            }
+        }
+
+        double utilization = 0;
+
+        for (int i = 0; i < numOfVMs; i++) {
+            utilization += CT[i] - ST[i];
+        }
+
+        return utilization / (calculateActualMakespan(list) * numOfVMs);
+
     }
 
     public double[] getVM_MIPS_POWERS() {
@@ -382,7 +415,7 @@ public class Simulation {
         return rng;
     }
 
-    private double calculatePredictedMakespan(int[] mapping) {
+    public double calculatePredictedMakespan(int[] mapping) {
         double[] finishTimes = new double[numOfVMs];
 
         for (int i = 0; i < numOfCloudlets; i++) {
@@ -402,10 +435,30 @@ public class Simulation {
         return maxFinishTime;
     }
 
+    public double calculatePredictedResourceUtilization(int[] mapping) {
+        double[] finishTimes = new double[numOfVMs];
+
+        for (int i = 0; i < numOfCloudlets; i++) {
+            if (mapping[i] == numOfVMs) {
+                mapping[i] = (int) numOfVMs - 1;
+            }
+            finishTimes[mapping[i]] += ETC_MATRIX[i][mapping[i]];
+        }
+
+        double totalFinishTime = 0;
+        for (int i = 0; i < numOfVMs; i++) {
+            totalFinishTime += finishTimes[i];
+        }
+
+        return totalFinishTime / (calculatePredictedMakespan(mapping) * numOfVMs);
+    }
+
     public double predictFitnessValue(int[] mapping) {
         switch (fitnessType) {
             case 0:
                 return calculatePredictedMakespan(mapping);
+            case 1:
+                return 1.0 / calculatePredictedResourceUtilization(mapping); //maximization
             default:
                 return -1; //error value
         }
