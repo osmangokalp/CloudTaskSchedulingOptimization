@@ -31,6 +31,7 @@ public class Test {
     private static int numOfVMs = 10;
     private static int brokerType = 0; //0: Mapping broker, 1: SJF Broker, 2: FCFS Broker (Standard DatacenterBroker)
     private static boolean silent = true;
+    private static int fitnessType = 0; // 0:makespan, 1: resource utilization
 
     static int MAX_FES = numOfCloudlets * 1000;
 
@@ -47,7 +48,7 @@ public class Test {
         }
         Log.printLine();
 
-        Simulation sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        Simulation sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
 
         double predictedMakespan = sim.predictFitnessValue(mapping);
         System.out.println("Random mapping predicted fitness: " + predictedMakespan);
@@ -107,13 +108,13 @@ public class Test {
         //SJF
         rng = new Random(seed);
         brokerType = 1;
-        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
         System.out.println("SJF fitness: " + sim.runSimulation(null));
 
         //FCFS
         rng = new Random(seed);
         brokerType = 2;
-        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
         System.out.println("FCFS fitness: " + sim.runSimulation(null));
 
         System.out.println();
@@ -121,7 +122,7 @@ public class Test {
         //Min Min
         rng = new Random(seed);
         brokerType = 0;
-        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
         MinMinScheduler minmins = new MinMinScheduler(sim);
         mapping = minmins.schedule(0);
         predictedMakespan = sim.predictFitnessValue(mapping);
@@ -137,7 +138,7 @@ public class Test {
         //Max Min
         rng = new Random(seed);
         brokerType = 0;
-        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, rng, silent);
+        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
         MaxMinScheduler maxmins = new MaxMinScheduler(sim);
         mapping = maxmins.schedule(0);
         predictedMakespan = sim.predictFitnessValue(mapping);

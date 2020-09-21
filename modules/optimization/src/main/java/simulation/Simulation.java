@@ -46,17 +46,18 @@ public class Simulation {
     private int numOfVMs;
     private Random rng;
     private boolean silent;
-    private int fitnessType = 0; // 0:makespan, 1: resource utilization
+    private int fitnessType; // 0:makespan, 1: resource utilization
 
     private final double[] VM_MIPS_POWERS;
     private final int[] CLOUDLET_LENGTHS;
     private final double[][] ETC_MATRIX;
 
-    public Simulation(int cloudletSchedulerType, int numOfCloudlets, int numOfVMs, int brokerType, Random rng, boolean silent) {
+    public Simulation(int cloudletSchedulerType, int numOfCloudlets, int numOfVMs, int brokerType, int fitnessType, Random rng, boolean silent) {
         this.cloudletSchedulerType = cloudletSchedulerType;
         this.numOfCloudlets = numOfCloudlets;
         this.numOfVMs = numOfVMs;
         this.brokerType = brokerType;
+        this.fitnessType = fitnessType;
         this.rng = rng;
         this.silent = silent;
 
