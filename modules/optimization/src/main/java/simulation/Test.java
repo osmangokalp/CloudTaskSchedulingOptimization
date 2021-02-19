@@ -26,7 +26,7 @@ public class Test {
 
     private static int seed = 0;
 
-    private static int cloudletSchedulerType = 1; //0: space shared, 1: time shared
+    private static int cloudletSchedulerType = 0; //0: space shared, 1: time shared
     private static int numOfCloudlets = 400;
     private static int numOfVMs = 10;
     private static int brokerType = 0; //0: Mapping broker, 1: SJF Broker, 2: FCFS Broker (Standard DatacenterBroker)
@@ -38,6 +38,8 @@ public class Test {
     public static void main(String[] args) {
 
         //List<Cloudlet> cloudletList = Util.readSWFWorkload("HPC2N-2002-1.1-cln");
+
+        long startTime, endTime;
 
         Random rng = new Random(seed);
         int[] mapping = new int[numOfCloudlets];
@@ -64,7 +66,10 @@ public class Test {
         //ABC-----------------------------------------------
         rng = new Random(seed);
         ABC_Scheduler abcScheduler = new ABC_Scheduler(sim);
+        startTime = System.nanoTime();
         mapping = abcScheduler.schedule(MAX_FES);
+        endTime = System.nanoTime();
+        System.out.println("Time elapsed (s): " + (endTime - startTime) / 1000000000.0);
 
         System.out.print("ABC Mapping: ");
         for (int i = 0; i < numOfCloudlets; i++) {
@@ -86,7 +91,10 @@ public class Test {
         //PSO-----------------------------------------------
         rng = new Random(seed);
         PSO_Scheduler psoScheduler = new PSO_Scheduler(sim);
+        startTime = System.nanoTime();
         mapping = psoScheduler.schedule(MAX_FES);
+        endTime = System.nanoTime();
+        System.out.println("Time elapsed (s): " + (endTime - startTime) / 1000000000.0);
 
         System.out.print("PSO Mapping: ");
         for (int i = 0; i < numOfCloudlets; i++) {
