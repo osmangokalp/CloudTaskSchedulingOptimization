@@ -7,8 +7,7 @@ package simulation;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.util.WorkloadFileReader;
-import scheduler.MaxMinScheduler;
-import scheduler.MinMinScheduler;
+import scheduler.*;
 import simulation.Simulation;
 
 import java.io.FileNotFoundException;
@@ -16,8 +15,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.cloudbus.cloudsim.Log;
-import scheduler.ABC_Scheduler;
-import scheduler.PSO_Scheduler;
 
 /**
  * @author osman
@@ -33,7 +30,7 @@ public class Test {
     private static boolean silent = true;
     private static int fitnessType = 0; // 0:makespan, 1: resource utilization
 
-    static int MAX_FES = numOfCloudlets * 1000;
+    static int MAX_FES = numOfCloudlets * 10000;
 
     public static void main(String[] args) {
 
@@ -60,6 +57,31 @@ public class Test {
 
         System.out.println("Random mapping predicted makespan: " + sim.calculatePredictedMakespan(mapping));
         System.out.println("Random mapping predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
+
+        System.out.println("");
+
+        //CMAES-----------------------------------------------
+        rng = new Random(seed);
+        CMAES_Scheduler cmaesScheduler = new CMAES_Scheduler(sim);
+        startTime = System.nanoTime();
+        mapping = cmaesScheduler.schedule(MAX_FES);
+        endTime = System.nanoTime();
+        System.out.println("Time elapsed (s): " + (endTime - startTime) / 1000000000.0);
+
+        System.out.print("CMAES Mapping: ");
+        for (int i = 0; i < numOfCloudlets; i++) {
+            System.out.print(mapping[i] + ", ");
+        }
+        System.out.println();
+
+        predictedMakespan = sim.predictFitnessValue(mapping);
+        System.out.println("ABC predicted fitness: " + predictedMakespan);
+
+        actualMakespan = sim.runSimulation(mapping);
+        System.out.println("ABC actual fitness: " + actualMakespan);
+
+        System.out.println("ABC predicted makespan: " + sim.calculatePredictedMakespan(mapping));
+        System.out.println("ABC predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
 
         System.out.println("");
 
