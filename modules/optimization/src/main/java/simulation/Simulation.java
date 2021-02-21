@@ -52,7 +52,7 @@ public class Simulation {
     private final int[] CLOUDLET_LENGTHS;
     private final double[][] ETC_MATRIX;
 
-    public Simulation(int cloudletSchedulerType, int numOfCloudlets, int numOfVMs, int brokerType, int fitnessType, Random rng, boolean silent) {
+    public Simulation(int cloudletSchedulerType, int numOfCloudlets, int numOfVMs, int brokerType, int fitnessType, Random rng, boolean silent, int highHeterogeneity) {
         this.cloudletSchedulerType = cloudletSchedulerType;
         this.numOfCloudlets = numOfCloudlets;
         this.numOfVMs = numOfVMs;
@@ -63,7 +63,11 @@ public class Simulation {
 
         VM_MIPS_POWERS = new double[numOfVMs];
         for (int i = 0; i < numOfVMs; i++) {
-            VM_MIPS_POWERS[i] = rng.nextInt(501) + 500; // Rand [500, 1000]
+            if (highHeterogeneity == 1) {
+                VM_MIPS_POWERS[i] = rng.nextInt(901) + 100; // Rand [100, 1000]
+            } else {
+                VM_MIPS_POWERS[i] = rng.nextInt(101) + 900; // Rand [900, 1000]
+            }
         }
 
         CLOUDLET_LENGTHS = new int[numOfCloudlets];

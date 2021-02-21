@@ -19,7 +19,7 @@ public class CMAES_Scheduler extends TaskScheduler{
     @Override
     public int[] schedule(int MAX_FES) {
 
-        int NP = 40;
+        int NP = 20;
         int dimension = sim.getNumOfCloudlets();
         double upperBound = sim.getNumOfVMs();
         double lowerBound = 0;
