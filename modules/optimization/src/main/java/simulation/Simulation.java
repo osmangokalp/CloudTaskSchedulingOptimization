@@ -66,7 +66,7 @@ public class Simulation {
             if (highHeterogeneity == 1) {
                 VM_MIPS_POWERS[i] = rng.nextInt(901) + 100; // Rand [100, 1000]
             } else {
-                VM_MIPS_POWERS[i] = rng.nextInt(101) + 900; // Rand [900, 1000]
+                VM_MIPS_POWERS[i] = rng.nextInt(101) + 500; // Rand [500, 600]
             }
         }
 
@@ -234,7 +234,7 @@ public class Simulation {
                     broker = new SJF_DatacenterBroker("Broker");
                     break;
                 case 2:
-                    broker = new DatacenterBroker("Broker");
+                    broker = new DatacenterBroker("Broker"); //Default broker: FCFS
                     break;
             }
 

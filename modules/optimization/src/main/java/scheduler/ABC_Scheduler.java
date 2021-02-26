@@ -18,7 +18,7 @@ public class ABC_Scheduler extends TaskScheduler {
     private int MAX_FES;
 
     /* Control Parameters of ABC algorithm*/
-    int NP = 20;
+    int NP = 40;
     /* The number of colony size (employed bees+onlooker bees)*/
     int FoodNumber = NP / 2;
     /*The number of food sources equals the half of the colony size*/
@@ -69,6 +69,7 @@ public class ABC_Scheduler extends TaskScheduler {
         D = sim.getNumOfCloudlets();
         lb = 0;
         ub = sim.getNumOfVMs();
+        limit = D * FoodNumber;
 
         Foods = new double[FoodNumber][D];
         f = new double[FoodNumber];

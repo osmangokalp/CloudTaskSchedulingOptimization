@@ -17,15 +17,17 @@ import org.cloudbus.cloudsim.Log;
  */
 public class Test {
 
-    //Scenario 0: high number of cloudlets, high heterogeneity
-    //Scenario 1: high number of cloudlets, low heterogeneity
-    //Scenario 2: low number of cloudlets, high heterogeneity
-    //Scenario 3: low number of cloudlets, low heterogeneity
-    //# of cloudlets: 100, 1000
-    //low heterogeneity: VM_MIPS_POWERS[i] = rng.nextInt(101) + 900; // Rand [900, 1000]
+    //Scenario 0: low number of cloudlets, high heterogeneity
+    //Scenario 1: low number of cloudlets, low heterogeneity
+    //Scenario 2: medium number of cloudlets, high heterogeneity
+    //Scenario 3: medium number of cloudlets, low heterogeneity
+    //Scenario 4: high number of cloudlets, high heterogeneity
+    //Scenario 5: high number of cloudlets, low heterogeneity
+    //# of cloudlets: 100, 1000, 5000
+    //low heterogeneity: VM_MIPS_POWERS[i] = rng.nextInt(101) + 500; // Rand [500, 600]
     //high heterogeneity: VM_MIPS_POWERS[i] = rng.nextInt(901) + 100; // Rand [100, 1000]
     private static int SEED = 0;
-    private static int NUM_TRY = 25;
+    private static int NUM_TRY = 10;
 
     private static int cloudletSchedulerType = 0; //0: space shared, 1: time shared
     private static int numOfCloudlets;
@@ -43,174 +45,44 @@ public class Test {
 
         //scenario 0
         System.out.println("\n********************** SCENARIO 0 **************************");
-        numOfCloudlets = 1000;
+        numOfCloudlets = 100;
         highHeterogeneity = 1;
         MAX_FES = numOfCloudlets * 1000;
         doAllExperiments();
 
         //scenario 1
         System.out.println("\n********************** SCENARIO 1 **************************");
-        numOfCloudlets = 1000;
+        numOfCloudlets = 100;
         highHeterogeneity = 0;
         MAX_FES = numOfCloudlets * 1000;
         doAllExperiments();
 
         //scenario 2
         System.out.println("\n********************** SCENARIO 2 **************************");
-        numOfCloudlets = 100;
+        numOfCloudlets = 1000;
         highHeterogeneity = 1;
         MAX_FES = numOfCloudlets * 1000;
         doAllExperiments();
 
         //scenario 3
         System.out.println("\n********************** SCENARIO 3 **************************");
-        numOfCloudlets = 100;
+        numOfCloudlets = 1000;
         highHeterogeneity = 0;
         doAllExperiments();
 
-        /*long startTime, endTime;
+        //scenario 4
+        System.out.println("\n********************** SCENARIO 4 **************************");
+        numOfCloudlets = 5000;
+        highHeterogeneity = 1;
+        MAX_FES = numOfCloudlets * 1000;
+        doAllExperiments();
 
-        Random rng = new Random(SEED);
-        int[] mapping = new int[numOfCloudlets];
-        Log.print("Random mapping: ");
-        for (int i = 0; i < numOfCloudlets; i++) {
-            mapping[i] = rng.nextInt(numOfVMs); // random mapping
-            System.out.print(mapping[i] + ", ");
-        }
-        Log.printLine();
+        //scenario 5
+        System.out.println("\n********************** SCENARIO 5 **************************");
+        numOfCloudlets = 5000;
+        highHeterogeneity = 0;
+        doAllExperiments();
 
-        Simulation sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
-
-        double predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("Random mapping predicted fitness: " + predictedMakespan);
-
-        double actualMakespan = sim.runSimulation(mapping);
-        System.out.println("Random mapping actual fitness: " + actualMakespan);
-
-        System.out.println("Random mapping predicted makespan: " + sim.calculatePredictedMakespan(mapping));
-        System.out.println("Random mapping predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
-
-        System.out.println("");
-
-        //CMAES-----------------------------------------------
-        rng = new Random(SEED);
-        CMAES_Scheduler cmaesScheduler = new CMAES_Scheduler(sim);
-        startTime = System.nanoTime();
-        mapping = cmaesScheduler.schedule(MAX_FES);
-        endTime = System.nanoTime();
-        System.out.println("Time elapsed (s): " + (endTime - startTime) / 1000000000.0);
-
-        System.out.print("CMAES Mapping: ");
-        for (int i = 0; i < numOfCloudlets; i++) {
-            System.out.print(mapping[i] + ", ");
-        }
-        System.out.println();
-
-        predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("ABC predicted fitness: " + predictedMakespan);
-
-        actualMakespan = sim.runSimulation(mapping);
-        System.out.println("ABC actual fitness: " + actualMakespan);
-
-        System.out.println("ABC predicted makespan: " + sim.calculatePredictedMakespan(mapping));
-        System.out.println("ABC predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
-
-        System.out.println("");
-
-        //ABC-----------------------------------------------
-        rng = new Random(SEED);
-        ABC_Scheduler abcScheduler = new ABC_Scheduler(sim);
-        startTime = System.nanoTime();
-        mapping = abcScheduler.schedule(MAX_FES);
-        endTime = System.nanoTime();
-        System.out.println("Time elapsed (s): " + (endTime - startTime) / 1000000000.0);
-
-        System.out.print("ABC Mapping: ");
-        for (int i = 0; i < numOfCloudlets; i++) {
-            System.out.print(mapping[i] + ", ");
-        }
-        System.out.println();
-
-        predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("ABC predicted fitness: " + predictedMakespan);
-
-        actualMakespan = sim.runSimulation(mapping);
-        System.out.println("ABC actual fitness: " + actualMakespan);
-
-        System.out.println("ABC predicted makespan: " + sim.calculatePredictedMakespan(mapping));
-        System.out.println("ABC predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
-
-        System.out.println("");
-
-        //PSO-----------------------------------------------
-        rng = new Random(SEED);
-        PSO_Scheduler psoScheduler = new PSO_Scheduler(sim);
-        startTime = System.nanoTime();
-        mapping = psoScheduler.schedule(MAX_FES);
-        endTime = System.nanoTime();
-        System.out.println("Time elapsed (s): " + (endTime - startTime) / 1000000000.0);
-
-        System.out.print("PSO Mapping: ");
-        for (int i = 0; i < numOfCloudlets; i++) {
-            System.out.print(mapping[i] + ", ");
-        }
-        System.out.println();
-
-        predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("PSO predicted fitness: " + predictedMakespan);
-
-        actualMakespan = sim.runSimulation(mapping);
-        System.out.println("PSO actual fitness: " + actualMakespan);
-
-        System.out.println("PSO predicted makespan: " + sim.calculatePredictedMakespan(mapping));
-        System.out.println("PSO predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
-
-        System.out.println("");
-
-        //SJF
-        rng = new Random(SEED);
-        brokerType = 1;
-        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
-        System.out.println("SJF fitness: " + sim.runSimulation(null));
-
-        //FCFS
-        rng = new Random(SEED);
-        brokerType = 2;
-        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
-        System.out.println("FCFS fitness: " + sim.runSimulation(null));
-
-        System.out.println();
-
-        //Min Min
-        rng = new Random(SEED);
-        brokerType = 0;
-        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
-        MinMinScheduler minmins = new MinMinScheduler(sim);
-        mapping = minmins.schedule(0);
-        predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("MinMin predicted fitness: " + predictedMakespan);
-        actualMakespan = sim.runSimulation(mapping);
-        System.out.println("MinMin actual fitness: " + actualMakespan);
-
-        System.out.println("MinMin predicted makespan: " + sim.calculatePredictedMakespan(mapping));
-        System.out.println("MinMin predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
-
-        System.out.println();
-
-        //Max Min
-        rng = new Random(SEED);
-        brokerType = 0;
-        sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent);
-        MaxMinScheduler maxmins = new MaxMinScheduler(sim);
-        mapping = maxmins.schedule(0);
-        predictedMakespan = sim.predictFitnessValue(mapping);
-        System.out.println("MaxMin predicted fitness: " + predictedMakespan);
-        actualMakespan = sim.runSimulation(mapping);
-        System.out.println("MaxMin actual fitness: " + actualMakespan);
-
-        System.out.println("MaxMin predicted makespan: " + sim.calculatePredictedMakespan(mapping));
-        System.out.println("MaxMin predicted resource utilization: " + sim.calculatePredictedResourceUtilization(mapping));
-        */
     }
 
     private static void doAllExperiments() {
@@ -219,22 +91,7 @@ public class Test {
         MinMinExp();
         MaxMinExp();
         ABCExp();
-        CMAESExp();
         PSOExp();
-    }
-
-    public static void CMAESExp() {
-        double[] results = new double[NUM_TRY];
-        for (int i = 0; i < NUM_TRY; i++) {
-            Random rng = new Random(SEED + i);
-            brokerType = 0;
-            Simulation sim = new Simulation(cloudletSchedulerType, numOfCloudlets, numOfVMs, brokerType, fitnessType, rng, silent, highHeterogeneity);
-            CMAES_Scheduler cmaes_scheduler = new CMAES_Scheduler(sim);
-            int[] mapping = cmaes_scheduler.schedule(MAX_FES);
-            double makespan = sim.runSimulation(mapping);
-            results[i] = makespan;
-        }
-        calculateStatistics("CMAES", results);
     }
 
     public static void PSOExp() {

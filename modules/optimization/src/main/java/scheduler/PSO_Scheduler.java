@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public class PSO_Scheduler extends TaskScheduler {
     
-    private int SWARM_SIZE = 20;
+    private int SWARM_SIZE = 40;
     private int TYPE_OF_ALGORITHM = 0;
     private int NEIGHBOR = SWARM_SIZE / 2; //[0, SWARM_SIZE]
 
