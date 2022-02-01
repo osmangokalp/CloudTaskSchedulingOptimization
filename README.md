@@ -6,7 +6,7 @@ Gökalp, O. (2021). Performance evaluation of Heuristic and Metaheuristic Algori
 
 Paper link: https://doi.org/10.1109/SIU53274.2021.9477821
 
-**Please see [optimization package](https://github.com/osmangokalp/CloudTaskSchedulingOptimization/tree/master/modules/optimization) for the implementations.**
+**Please see [optimization package](modules/optimization) for the implementations.**
 
 # CloudSim: A Framework For Modeling And Simulation Of Cloud Computing Infrastructures And Services #
 
