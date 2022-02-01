@@ -6,6 +6,8 @@ Gökalp, O. (2021). Performance evaluation of Heuristic and Metaheuristic Algori
 
 Paper link: https://doi.org/10.1109/SIU53274.2021.9477821
 
+**Please see [optimization package](https://github.com/osmangokalp/CloudTaskSchedulingOptimization/tree/master/modules/optimization) for the implementations.**
+
 # CloudSim: A Framework For Modeling And Simulation Of Cloud Computing Infrastructures And Services #
 
 Cloud computing is the leading approach for delivering reliable, secure, fault-tolerant, sustainable, and scalable computational services. Hence timely, repeatable, and controllable methodologies for performance evaluation of new cloud applications and policies before their actual development are reqruied. Because utilization of real testbeds limits the experiments to the scale of the testbed and makes the reproduction of results an extremely difficult undertaking, simulation may be used.
